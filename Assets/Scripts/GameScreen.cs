@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Camera : MonoBehaviour {
+public class GameScreen : MonoBehaviour {
     
     public static float worldHeight;
     public static float worldWidth;
@@ -9,8 +9,11 @@ public class Camera : MonoBehaviour {
 	// Use this for initialization
     void Start()
     {
-        worldHeight = Screen.height / 100f;
-        worldWidth = Screen.width / 100f;
+        worldHeight = Screen.height;
+        worldWidth = Screen.width;
+
+        //Debug.Log(worldHeight);
+        //Debug.Log(worldWidth);
 	
 	}
 	

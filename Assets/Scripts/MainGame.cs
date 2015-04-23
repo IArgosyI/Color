@@ -6,19 +6,39 @@ public class MainGame : MonoBehaviour {
     public float timeInterval;
     public SpriteRenderer[] backgrounds;
     public int selectedBG;
+    public Color[] tmpColor;
 
     public bool playing = true;
 	// Use this for initialization
 	void Start () {
         selectedBG = 0;
-        StartCoroutine(spawnColorOrbs());
+        ColorOrb.colors = tmpColor;
+        spawnInitialColorOrbs();
+        
         StartCoroutine(flashingSelected());
+
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
         
 	}
+
+    void spawnInitialColorOrbs()
+    {
+        for (int i = 0; i < ColorOrb.colors.Length; i++)
+        {
+            spawnOneColorOrb(i);
+        }
+    }
+
+    void spawnOneColorOrb(int n)
+    {
+        GameObject co = Instantiate(colorOrb);
+        co.GetComponent<ColorOrb>().mainGame = this;
+        co.GetComponent<ColorOrb>().setColor(n);
+    }
 
     IEnumerator flashingSelected()
     {
@@ -31,16 +51,6 @@ public class MainGame : MonoBehaviour {
             c.a = 1;
             backgrounds[selectedBG].color = c;
             yield return new WaitForSeconds(0.5f);
-        }
-    }
-
-    IEnumerator spawnColorOrbs()
-    {
-        while (playing)
-        {
-            GameObject co = Instantiate(colorOrb);
-            co.GetComponent<ColorOrb>().mainGame = this;
-            yield return new WaitForSeconds(timeInterval);
         }
     }
 
@@ -59,6 +69,7 @@ public class MainGame : MonoBehaviour {
             }
         }
         co.StartCoroutine(co.colorAnimation());
+        spawnOneColorOrb(co.nColor);
     }
 
     public void updateColors(int nColor)

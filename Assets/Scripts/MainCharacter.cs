@@ -18,6 +18,7 @@ public class MainCharacter : MonoBehaviour {
         float v = Input.GetAxis("Vertical");
         GetComponent<Rigidbody2D>().velocity = new Vector2(h, v)*speed;
        // Camera.setPositionInWorld(this.transform);
+        //Debug.Log(this.transform.position);
         
     }
 
