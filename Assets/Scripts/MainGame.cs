@@ -123,7 +123,7 @@ public class MainGame : MonoBehaviour {
             }
         }
         co.StartCoroutine(co.colorAnimation());
-        spawnOneColorOrb(co.nColor);
+        //spawnOneColorOrb(co.nColor);
     }
 
     public void updateColors(int nColor)
