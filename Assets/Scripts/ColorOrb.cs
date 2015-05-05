@@ -10,6 +10,23 @@ public class ColorOrb : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //InitializePosition();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+        if (GetComponent<Rigidbody2D>() == null)
+        {
+            return;
+        }
+        velocity = GetComponent<Rigidbody2D>().velocity;
+        velocity.Normalize();
+        GetComponent<Rigidbody2D>().velocity = velocity * speed;
+        
+	}
+
+    void InitializePosition()
+    {
         float r = Random.Range(0.0f, GameScreen.worldHeight * 2 + GameScreen.worldWidth * 2);
         float buffer = 20.0f;
         if (r < GameScreen.worldHeight)
@@ -28,8 +45,8 @@ public class ColorOrb : MonoBehaviour {
         {
             this.transform.position = new Vector3(r - GameScreen.worldHeight * 2 - GameScreen.worldWidth, buffer, 0);
         }
-        float p = Random.Range(0.0f,1.0f);
-	    velocity = new Vector3(speed*p, speed*(1-p),0);
+        float p = Random.Range(0.0f, 1.0f);
+        velocity = new Vector3(speed * p, speed * (1 - p), 0);
         //Debug.Log(r+" "+this.transform.position);
 
         //nColor = Random.Range(0, colors.Length);
@@ -39,35 +56,21 @@ public class ColorOrb : MonoBehaviour {
 
         speed += Random.Range(-speed * 0.2f, speed * 0.2f);
         GetComponent<Rigidbody2D>().velocity = velocity * speed;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (GetComponent<Rigidbody2D>() == null)
-        {
-            return;
-        }
-        velocity = GetComponent<Rigidbody2D>().velocity;
-        velocity.Normalize();
-        GetComponent<Rigidbody2D>().velocity = velocity * speed;
-        /*int bounce = Camera.setPositionInWorld(this.transform);
-        if (bounce == -1 || bounce == 1)
-        {
-            velocity = new Vector3(-velocity.x, velocity.y, 0);
-        }
-        if (bounce == -2 || bounce == 2)
-        {
-            velocity = new Vector3(velocity.x, -velocity.y,0);
-        }*/
-	}
+    }
+
+    void OnMouseDown()
+    {
+        //Debug.Log("?");
+        mainGame.eatColorOrb(this);
+    }
 
     public IEnumerator colorAnimation()
     {
         GetComponent<Collider2D>().enabled = false;
         Destroy(GetComponent<Rigidbody2D>());
         GetComponent<SpriteRenderer>().sortingOrder = -60;
-        Time.timeScale = 0.3f;
-        Time.fixedDeltaTime = Time.timeScale * 0.02f;
+        //Time.timeScale = 0.3f;
+        //Time.fixedDeltaTime = Time.timeScale * 0.02f;
         int i = 0;
         while (i++<40)
         {
@@ -75,8 +78,8 @@ public class ColorOrb : MonoBehaviour {
             yield return new WaitForSeconds(0.001f);
         }
         mainGame.updateColors(nColor);
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = Time.timeScale * 0.02f;
+        //Time.timeScale = 1f;
+        //Time.fixedDeltaTime = Time.timeScale * 0.02f;
         Destroy(this.gameObject);
 
     }
