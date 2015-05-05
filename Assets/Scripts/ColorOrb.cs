@@ -7,6 +7,7 @@ public class ColorOrb : MonoBehaviour {
     public static Color[] colors;
     public int nColor;
     public MainGame mainGame;
+    public GameObject circleRing;
 
 	// Use this for initialization
 	void Start () {
@@ -66,6 +67,9 @@ public class ColorOrb : MonoBehaviour {
 
     public IEnumerator colorAnimation()
     {
+        GameObject cR = Instantiate(circleRing);
+        cR.transform.position = transform.position;
+        cR.GetComponent<SpriteRenderer>().sortingOrder = 0;
         GetComponent<Collider2D>().enabled = false;
         Destroy(GetComponent<Rigidbody2D>());
         GetComponent<SpriteRenderer>().sortingOrder = -60;
@@ -74,12 +78,14 @@ public class ColorOrb : MonoBehaviour {
         int i = 0;
         while (i++<40)
         {
+            cR.transform.localScale += new Vector3(5, 5, 0);
             transform.localScale += new Vector3(250, 250, 0);
             yield return new WaitForSeconds(0.001f);
         }
         mainGame.updateColors(nColor);
         //Time.timeScale = 1f;
         //Time.fixedDeltaTime = Time.timeScale * 0.02f;
+        Destroy(cR);
         Destroy(this.gameObject);
 
     }

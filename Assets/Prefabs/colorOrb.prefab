@@ -70,10 +70,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c720c9f0c20f0d64d9a7107729e9882c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
+  speed: 100
   velocity: {x: 0, y: 0, z: 0}
   nColor: 0
   mainGame: {fileID: 0}
+  circleRing: {fileID: 124312, guid: e89078b4edc66fd4d9abf36a8bfcd22f, type: 2}
 --- !u!212 &21224716
 SpriteRenderer:
   m_ObjectHideFlags: 1
