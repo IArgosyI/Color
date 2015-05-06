@@ -62,11 +62,12 @@ public class ColorOrb : MonoBehaviour {
     void OnMouseDown()
     {
         //Debug.Log("?");
-        mainGame.eatColorOrb(this);
+        if(mainGame.animationDone)mainGame.eatColorOrb(this);
     }
 
     public IEnumerator colorAnimation()
     {
+        mainGame.animationDone = false;
         GameObject cR = Instantiate(circleRing);
         cR.transform.position = transform.position;
         cR.GetComponent<SpriteRenderer>().sortingOrder = 0;
@@ -86,6 +87,7 @@ public class ColorOrb : MonoBehaviour {
         //Time.timeScale = 1f;
         //Time.fixedDeltaTime = Time.timeScale * 0.02f;
         Destroy(cR);
+        mainGame.animationDone = true;
         Destroy(this.gameObject);
 
     }

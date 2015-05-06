@@ -13,6 +13,8 @@ public class MainGame : MonoBehaviour {
 
     public int[,] answers;
 
+    public GameObject[] answerSet;
+
     public GameObject button;
     public SpriteRenderer winScreen;
     public SpriteRenderer retryScreen;
@@ -20,6 +22,8 @@ public class MainGame : MonoBehaviour {
     public bool playing = true;
 
     public int maxSlot;
+
+    public bool animationDone = true;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +33,7 @@ public class MainGame : MonoBehaviour {
         
         StartCoroutine(flashingSelected());
         StartCoroutine(rainingColorOrbs());
+        StartCoroutine(animateAnswerSet());
 
         answers = new int[2,5];
         answers[0, 0] = 0;
@@ -84,31 +89,6 @@ public class MainGame : MonoBehaviour {
         co.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1) * co.GetComponent<ColorOrb>().speed;
     }
 
-    IEnumerator flashingSelected()
-    {
-        while (playing)
-        {
-            SpriteRenderer s = (SpriteRenderer)Instantiate(backgrounds[selectedBG]);
-            s.sortingOrder = -101;
-            backgrounds[selectedBG].sprite = borderBG[selectedBG];
-            yield return new WaitForSeconds(0.1f);
-            backgrounds[selectedBG].sprite = whiteBG[selectedBG];
-            yield return new WaitForSeconds(0.5f);
-
-            Destroy(s.gameObject);
-        }
-    }
-
-    IEnumerator rainingColorOrbs()
-    {
-        while (playing)
-        {
-            int r = Random.Range(0, ColorOrb.colors.Length);
-            spawnOneColorOrb(r);
-            yield return new WaitForSeconds(timeInterval);
-        }
-    }
-
     public void eatColorOrb(ColorOrb co)
     {
         for (int i = 0; i < backgrounds.Length; i++)
@@ -130,6 +110,7 @@ public class MainGame : MonoBehaviour {
     {
         backgrounds[selectedBG].sprite = whiteBG[selectedBG];
         backgrounds[selectedBG].color = ColorOrb.colors[nColor];
+        answerSet[selectedBG].GetComponent<SpriteRenderer>().color = ColorOrb.colors[nColor];
         selectedBG++;
         selectedBG %= backgrounds.Length;
     }
@@ -194,5 +175,51 @@ public class MainGame : MonoBehaviour {
         }
         Time.timeScale = 1f;
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
+    }
+
+    IEnumerator animateAnswerSet()
+    {
+        while (playing)
+        {
+            GameObject g = answerSet[selectedBG];
+            g.transform.position += new Vector3(0, 2f);
+            yield return new WaitForSeconds(0.1f);
+            g.transform.position += new Vector3(0, 1f);
+            yield return new WaitForSeconds(0.1f);
+            g.transform.position += new Vector3(0, 0.5f);
+            yield return new WaitForSeconds(0.1f);
+            g.transform.position += new Vector3(0, -0.5f);
+            yield return new WaitForSeconds(0.1f);
+            g.transform.position += new Vector3(0, -1f);
+            yield return new WaitForSeconds(0.1f);
+            g.transform.position += new Vector3(0, -2f);
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+
+    IEnumerator flashingSelected()
+    {
+        while (playing)
+        {
+            SpriteRenderer s = (SpriteRenderer)Instantiate(backgrounds[selectedBG]);
+            s.sortingOrder = -101;
+            backgrounds[selectedBG].sprite = borderBG[selectedBG];
+            yield return new WaitForSeconds(0.1f);
+            backgrounds[selectedBG].sprite = whiteBG[selectedBG];
+            yield return new WaitForSeconds(0.5f);
+
+            Destroy(s.gameObject);
+        }
+    }
+
+    IEnumerator rainingColorOrbs()
+    {
+        while (playing)
+        {
+            int r = Random.Range(0, ColorOrb.colors.Length);
+            spawnOneColorOrb(r);
+            yield return new WaitForSeconds(timeInterval);
+        }
     }
 }
