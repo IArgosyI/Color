@@ -15,9 +15,13 @@ public class MainGame : MonoBehaviour {
 
     public GameObject[] answerSet;
 
-    public GameObject button;
+    public GameObject doneButton;
+    public GameObject goButton;
+    public GameObject homeButton;
+    public SpriteRenderer introScreen;
     public SpriteRenderer winScreen;
     public SpriteRenderer retryScreen;
+    public SpriteRenderer blackScreen;
 
     public bool playing = true;
 
@@ -29,11 +33,14 @@ public class MainGame : MonoBehaviour {
 	void Start () {
         selectedBG = 0;
         ColorOrb.colors = tmpColor;
+        introScreen.enabled = true;
+        blackScreen.enabled = true;
+        playing = false;
+        doneButton.SetActive(false);
+        goButton.SetActive(true);
+        homeButton.SetActive(true);
         //spawnInitialColorOrbs();
         
-        StartCoroutine(flashingSelected());
-        StartCoroutine(rainingColorOrbs());
-        StartCoroutine(animateAnswerSet());
 
         answers = new int[2,5];
         answers[0, 0] = 0;
@@ -68,28 +75,28 @@ public class MainGame : MonoBehaviour {
         }
 	}
 
-    void spawnInitialColorOrbs()
+    void SpawnInitialColorOrbs()
     {
         for (int i = 0; i < ColorOrb.colors.Length; i++)
         {
             int r = Random.Range(0, maxSlot);
-            spawnOneColorOrb(i);
+            SpawnOneColorOrb(i);
 
         }
     }
 
-    void spawnOneColorOrb(int n)
+    void SpawnOneColorOrb(int n)
     {
         GameObject co = Instantiate(colorOrb);
         co.GetComponent<ColorOrb>().mainGame = this;
-        co.GetComponent<ColorOrb>().setColor(n);
+        co.GetComponent<ColorOrb>().SetColor(n);
         int r = Random.Range(1, maxSlot-1);
         co.transform.position = new Vector3(r * GameScreen.worldWidth / maxSlot,
             GameScreen.worldHeight * 0.9f);
         co.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1) * co.GetComponent<ColorOrb>().speed;
     }
 
-    public void eatColorOrb(ColorOrb co)
+    public void EatColorOrb(ColorOrb co)
     {
         for (int i = 0; i < backgrounds.Length; i++)
         {
@@ -102,11 +109,11 @@ public class MainGame : MonoBehaviour {
                 backgrounds[i].sortingOrder = -50;
             }
         }
-        co.StartCoroutine(co.colorAnimation());
+        co.StartCoroutine(co.ColorAnimation());
         //spawnOneColorOrb(co.nColor);
     }
 
-    public void updateColors(int nColor)
+    public void UpdateColors(int nColor)
     {
         backgrounds[selectedBG].sprite = whiteBG[selectedBG];
         backgrounds[selectedBG].color = ColorOrb.colors[nColor];
@@ -115,9 +122,9 @@ public class MainGame : MonoBehaviour {
         selectedBG %= backgrounds.Length;
     }
 
-    public void submitColors()
+    public void SubmitColors()
     {
-        if (chkColors())
+        if (ChkColors())
         {
             Debug.Log("yeah");
             winScreen.enabled = true;
@@ -126,13 +133,13 @@ public class MainGame : MonoBehaviour {
         }
         else
         {
-            StartCoroutine(returnToWhite());
+            StartCoroutine(ReturnToWhite());
             retryScreen.enabled = true;
             Time.timeScale = 0.0f;
         }
     }
 
-    public bool chkColors()
+    public bool ChkColors()
     {
         for (int i = 0; i < 2; i++)
         {
@@ -152,7 +159,27 @@ public class MainGame : MonoBehaviour {
         return false;
     }
 
-    public IEnumerator returnToWhite()
+    public void GoButton()
+    {
+        blackScreen.enabled = false;
+        introScreen.enabled = false;
+        doneButton.SetActive(true);
+        goButton.SetActive(false);
+        homeButton.SetActive(false);
+        playing = true;
+
+
+        StartCoroutine(FlashingSelected());
+        StartCoroutine(RainingColorOrbs());
+        StartCoroutine(AnimateAnswerSet());
+    }
+
+    public void HomeButton()
+    {
+        Application.LoadLevel("levelSelection");
+    }
+
+    public IEnumerator ReturnToWhite()
     {
         Time.timeScale = 0.1f;
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
@@ -177,7 +204,7 @@ public class MainGame : MonoBehaviour {
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
     }
 
-    IEnumerator animateAnswerSet()
+    IEnumerator AnimateAnswerSet()
     {
         while (playing)
         {
@@ -197,8 +224,7 @@ public class MainGame : MonoBehaviour {
         }
     }
 
-
-    IEnumerator flashingSelected()
+    IEnumerator FlashingSelected()
     {
         while (playing)
         {
@@ -213,12 +239,12 @@ public class MainGame : MonoBehaviour {
         }
     }
 
-    IEnumerator rainingColorOrbs()
+    IEnumerator RainingColorOrbs()
     {
         while (playing)
         {
             int r = Random.Range(0, ColorOrb.colors.Length);
-            spawnOneColorOrb(r);
+            SpawnOneColorOrb(r);
             yield return new WaitForSeconds(timeInterval);
         }
     }

@@ -62,10 +62,10 @@ public class ColorOrb : MonoBehaviour {
     void OnMouseDown()
     {
         //Debug.Log("?");
-        if(mainGame.animationDone)mainGame.eatColorOrb(this);
+        if(mainGame.animationDone)mainGame.EatColorOrb(this);
     }
 
-    public IEnumerator colorAnimation()
+    public IEnumerator ColorAnimation()
     {
         mainGame.animationDone = false;
         GameObject cR = Instantiate(circleRing);
@@ -83,7 +83,7 @@ public class ColorOrb : MonoBehaviour {
             transform.localScale += new Vector3(250, 250, 0);
             yield return new WaitForSeconds(0.001f);
         }
-        mainGame.updateColors(nColor);
+        mainGame.UpdateColors(nColor);
         //Time.timeScale = 1f;
         //Time.fixedDeltaTime = Time.timeScale * 0.02f;
         Destroy(cR);
@@ -92,7 +92,7 @@ public class ColorOrb : MonoBehaviour {
 
     }
 
-    public void setColor(int n)
+    public void SetColor(int n)
     {
         nColor = n;
         SpriteRenderer sr = (SpriteRenderer)this.GetComponent<SpriteRenderer>();

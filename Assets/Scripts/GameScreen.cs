@@ -20,7 +20,7 @@ public class GameScreen : MonoBehaviour {
 	
 	}
 
-    public static int setPositionInWorld(Transform t)
+    public static int SetPositionInWorld(Transform t)
     {
         if (t.position.x < -worldWidth)
         {

@@ -56,7 +56,7 @@ public class MainCharacter : MonoBehaviour {
         ColorOrb co = (ColorOrb)col.gameObject.GetComponent<ColorOrb>();
         if (co)
         {
-            mainGame.eatColorOrb(co);
+            mainGame.EatColorOrb(co);
 
         }
     }
