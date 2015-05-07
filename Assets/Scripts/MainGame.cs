@@ -11,7 +11,7 @@ public class MainGame : MonoBehaviour {
     public int selectedBG;
     public Color[] tmpColor;
 
-    public int[,] answers;
+    public int[][] answers;
 
     public GameObject[] answerSet;
 
@@ -40,19 +40,8 @@ public class MainGame : MonoBehaviour {
         goButton.SetActive(true);
         homeButton.SetActive(true);
         //spawnInitialColorOrbs();
-        
 
-        answers = new int[2,5];
-        answers[0, 0] = 0;
-        answers[0, 1] = 1;
-        answers[0, 2] = 2;
-        answers[0, 3] = 3;
-        answers[0, 4] = 4;
-        answers[1, 0] = 5;
-        answers[1, 1] = 1;
-        answers[1, 2] = 6;
-        answers[1, 3] = 7;
-        answers[1, 4] = 8;
+        answers = (int[][])Answers.answers.Clone();
 	}
 	
 	// Update is called once per frame
@@ -137,24 +126,33 @@ public class MainGame : MonoBehaviour {
             retryScreen.enabled = true;
             Time.timeScale = 0.0f;
         }
+        answers = (int[][])Answers.answers.Clone();
     }
 
     public bool ChkColors()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < answers.Length; i++)
         {
             int j = 0;
             for (j = 0; j < backgrounds.Length; j++)
             {
-                if (!backgrounds[j].color.Equals(ColorOrb.colors[answers[i, j]]))
+                int k;
+                for (k = 0; k < answers[i].Length; k++)
                 {
-                    break;
+                    Debug.Log(i + " " + k);
+                    if (answers[i][k] == -1)
+                    {
+                        continue;
+                    }
+                    if (backgrounds[j].color.Equals(ColorOrb.colors[answers[i][k]]))
+                    {
+                        answers[i][k] = -1;
+                        break;
+                    }
                 }
+                if (k != answers[i].Length) return true;
             }
-            if (j == backgrounds.Length)
-            {
-                return true;
-            }
+            if (j == backgrounds.Length) return true;
         }
         return false;
     }
