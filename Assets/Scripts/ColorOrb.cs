@@ -23,7 +23,11 @@ public class ColorOrb : MonoBehaviour {
         velocity = GetComponent<Rigidbody2D>().velocity;
         velocity.Normalize();
         GetComponent<Rigidbody2D>().velocity = velocity * speed;
-        
+
+        if (transform.position.y < -100)
+        {
+            Destroy(this.gameObject);
+        }
 	}
 
     void InitializePosition()
@@ -81,7 +85,7 @@ public class ColorOrb : MonoBehaviour {
         {
             cR.transform.localScale += new Vector3(5, 5, 0);
             transform.localScale += new Vector3(250, 250, 0);
-            yield return new WaitForSeconds(0.001f);
+            yield return new WaitForSeconds(0.01f);
         }
         mainGame.UpdateColors(nColor);
         //Time.timeScale = 1f;

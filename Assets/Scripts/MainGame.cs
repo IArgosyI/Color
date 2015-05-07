@@ -109,6 +109,7 @@ public class MainGame : MonoBehaviour {
                 backgrounds[i].sortingOrder = -50;
             }
         }
+        answerSet[selectedBG].GetComponent<SpriteRenderer>().color = ColorOrb.colors[co.nColor];
         co.StartCoroutine(co.ColorAnimation());
         //spawnOneColorOrb(co.nColor);
     }
@@ -117,7 +118,6 @@ public class MainGame : MonoBehaviour {
     {
         backgrounds[selectedBG].sprite = whiteBG[selectedBG];
         backgrounds[selectedBG].color = ColorOrb.colors[nColor];
-        answerSet[selectedBG].GetComponent<SpriteRenderer>().color = ColorOrb.colors[nColor];
         selectedBG++;
         selectedBG %= backgrounds.Length;
     }
@@ -229,10 +229,12 @@ public class MainGame : MonoBehaviour {
         while (playing)
         {
             SpriteRenderer s = (SpriteRenderer)Instantiate(backgrounds[selectedBG]);
-            s.sortingOrder = -101;
-            backgrounds[selectedBG].sprite = borderBG[selectedBG];
+            s.sprite = borderBG[selectedBG];
+            s.color = Color.white;
+            s.sortingOrder = 1;
+            s.enabled = true;
             yield return new WaitForSeconds(0.1f);
-            backgrounds[selectedBG].sprite = whiteBG[selectedBG];
+            s.enabled = false;
             yield return new WaitForSeconds(0.5f);
 
             Destroy(s.gameObject);
