@@ -67,7 +67,11 @@ public class ColorOrb : MonoBehaviour {
     void OnMouseDown()
     {
         //Debug.Log("?");
-        if(mainGame.animationDone && mainGame.playing)mainGame.EatColorOrb(this);
+        if (mainGame.animationDone && mainGame.playing)
+        {
+            GetComponent<AudioSource>().Play();
+            mainGame.EatColorOrb(this);
+        }
     }
 
     public IEnumerator ColorAnimation()
