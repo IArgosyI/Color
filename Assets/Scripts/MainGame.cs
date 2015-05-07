@@ -11,6 +11,8 @@ public class MainGame : MonoBehaviour {
     public int selectedBG;
     public Color[] tmpColor;
 
+    public Answers[] ANS;
+
     public int[][] answers;
 
     public GameObject[] answerSet;
@@ -41,7 +43,11 @@ public class MainGame : MonoBehaviour {
         homeButton.SetActive(true);
         //spawnInitialColorOrbs();
 
-        answers = (int[][])Answers.answers.Clone();
+        answers = new int[ANS.Length][];
+        for (int i = 0; i < answers.Length; i++)
+        {
+            answers[i] = (int[])ANS[i].answers.Clone();
+        }
 	}
 	
 	// Update is called once per frame
@@ -115,7 +121,6 @@ public class MainGame : MonoBehaviour {
     {
         if (ChkColors())
         {
-            Debug.Log("yeah");
             winScreen.enabled = true;
             Time.timeScale = 0.0f;
             
@@ -126,7 +131,11 @@ public class MainGame : MonoBehaviour {
             retryScreen.enabled = true;
             Time.timeScale = 0.0f;
         }
-        answers = (int[][])Answers.answers.Clone();
+        //answers = (int[][])Answers.answers.Clone();
+        for (int i = 0; i < answers.Length; i++)
+        {
+            answers[i] = (int[])ANS[i].answers.Clone();
+        }
     }
 
     public bool ChkColors()
@@ -139,7 +148,6 @@ public class MainGame : MonoBehaviour {
                 int k;
                 for (k = 0; k < answers[i].Length; k++)
                 {
-                    Debug.Log(i + " " + k);
                     if (answers[i][k] == -1)
                     {
                         continue;
@@ -150,7 +158,7 @@ public class MainGame : MonoBehaviour {
                         break;
                     }
                 }
-                if (k != answers[i].Length) return true;
+                if (k == answers[i].Length) break;
             }
             if (j == backgrounds.Length) return true;
         }
