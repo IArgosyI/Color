@@ -12,7 +12,7 @@ public class GameScreen : MonoBehaviour {
         Camera cam = Camera.main;
         worldHeight = 2f * cam.orthographicSize;
         worldWidth = worldHeight * cam.aspect;
-        Debug.Log(worldWidth + " " + worldHeight);
+        //Debug.Log(worldWidth + " " + worldHeight);
 	}
 	
 	// Update is called once per frame

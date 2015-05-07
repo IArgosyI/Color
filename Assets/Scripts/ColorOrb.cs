@@ -12,6 +12,7 @@ public class ColorOrb : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //InitializePosition();
+        //Instantiate(bubbleHighlight);
 	}
 	
 	// Update is called once per frame
@@ -84,7 +85,7 @@ public class ColorOrb : MonoBehaviour {
         while (i++<40)
         {
             cR.transform.localScale += new Vector3(5, 5, 0);
-            transform.localScale += new Vector3(250, 250, 0);
+            transform.localScale += new Vector3(50, 50, 0);
             yield return new WaitForSeconds(0.01f);
         }
         mainGame.UpdateColors(nColor);

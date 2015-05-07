@@ -74,9 +74,7 @@ public class MainGame : MonoBehaviour {
     {
         for (int i = 0; i < ColorOrb.colors.Length; i++)
         {
-            int r = Random.Range(0, maxSlot);
             SpawnOneColorOrb(i);
-
         }
     }
 
