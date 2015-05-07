@@ -237,9 +237,9 @@ public class MainGame : MonoBehaviour {
             s.color = Color.white;
             s.sortingOrder = 1;
             s.enabled = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
             s.enabled = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.4f);
 
             Destroy(s.gameObject);
         }
