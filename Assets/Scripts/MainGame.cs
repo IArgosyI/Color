@@ -20,6 +20,9 @@ public class MainGame : MonoBehaviour {
     public GameObject doneButton;
     public GameObject goButton;
     public GameObject homeButton;
+    public GameObject replayButton;
+    public GameObject nextLevelButton;
+
     public SpriteRenderer introScreen;
     public SpriteRenderer winScreen;
     public SpriteRenderer retryScreen;
@@ -33,6 +36,7 @@ public class MainGame : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //PlayerPrefs.DeleteAll();
         selectedBG = 0;
         ColorOrb.colors = tmpColor;
         introScreen.enabled = true;
@@ -41,6 +45,8 @@ public class MainGame : MonoBehaviour {
         doneButton.SetActive(false);
         goButton.SetActive(true);
         homeButton.SetActive(true);
+        replayButton.SetActive(false);
+        nextLevelButton.SetActive(false);
         //spawnInitialColorOrbs();
 
         answers = new int[ANS.Length][];
@@ -52,22 +58,22 @@ public class MainGame : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (retryScreen.enabled)
-            {
-                Time.timeScale = 1f;
-                //retryScreen.enabled = false;
-                Application.LoadLevel("levelSelection");
-            }
-            if (winScreen.enabled)
-            {
-                Time.timeScale = 1f;
-                PlayerPrefs.SetInt("level", 2);
-                PlayerPrefs.Save();
-                Application.LoadLevel("levelSelection");
-            }
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if (retryScreen.enabled)
+        //    {
+        //        Time.timeScale = 1f;
+        //        //retryScreen.enabled = false;
+        //        Application.LoadLevel("levelSelection");
+        //    }
+        //    if (winScreen.enabled)
+        //    {
+        //        Time.timeScale = 1f;
+        //        PlayerPrefs.SetInt("level", 2);
+        //        PlayerPrefs.Save();
+        //        Application.LoadLevel("levelSelection");
+        //    }
+        //}
 	}
 
     void SpawnInitialColorOrbs()
@@ -121,7 +127,13 @@ public class MainGame : MonoBehaviour {
         {
             winScreen.enabled = true;
             Time.timeScale = 0.0f;
-            
+            nextLevelButton.SetActive(true);
+
+            string s = Application.loadedLevelName;
+            s = s.Substring(s.Length - 1);
+            int x = int.Parse(s)+1;
+            PlayerPrefs.SetInt("level", x);
+            PlayerPrefs.Save();
         }
         else
         {
@@ -129,6 +141,12 @@ public class MainGame : MonoBehaviour {
             retryScreen.enabled = true;
             Time.timeScale = 0.0f;
         }
+
+        replayButton.SetActive(true);
+
+        //Move the moving characters here
+        MoveAnimateCharacters(1);
+
         //answers = (int[][])Answers.answers.Clone();
         for (int i = 0; i < answers.Length; i++)
         {
@@ -172,15 +190,53 @@ public class MainGame : MonoBehaviour {
         homeButton.SetActive(false);
         playing = true;
 
-
+        Time.timeScale = 1.0f;
         StartCoroutine(FlashingSelected());
         StartCoroutine(RainingColorOrbs());
         StartCoroutine(AnimateAnswerSet());
     }
 
+    public void ReplayButton()
+    {
+        blackScreen.enabled = false;
+        introScreen.enabled = false;
+        retryScreen.enabled = false;
+        winScreen.enabled = false;
+        doneButton.SetActive(true);
+        goButton.SetActive(false);
+        homeButton.SetActive(false);
+        replayButton.SetActive(false);
+        nextLevelButton.SetActive(false);
+        playing = true;
+
+
+        Time.timeScale = 1.0f;
+        MoveAnimateCharacters(-1);
+        //StartCoroutine(FlashingSelected());
+        //StartCoroutine(RainingColorOrbs());
+        //StartCoroutine(AnimateAnswerSet());
+    }
+
     public void HomeButton()
     {
         Application.LoadLevel("levelSelection");
+    }
+
+    public void MoveAnimateCharacters(int dir)
+    {
+        for (int i = 0; i < answerSet.Length; i++)
+        {
+            answerSet[i].transform.position += new Vector3(dir*240, dir*240, 0);
+            answerSet[i].GetComponent<SpriteRenderer>().sortingOrder = dir*10;
+        }
+    }
+
+    public void NextLevelButton()
+    {
+        string s = Application.loadedLevelName;
+        s = s.Substring(s.Length - 1);
+        int x = int.Parse(s);
+        Application.LoadLevel("level" + (x+1));
     }
 
     public IEnumerator ReturnToWhite()
@@ -192,7 +248,7 @@ public class MainGame : MonoBehaviour {
             backgrounds[i].sprite = originalBG[i];
             backgrounds[i].color = Color.grey;
         }
-        selectedBG = 0;
+        //selectedBG = 0;
         int count = 0;
         while (count++ < 20)
         {
