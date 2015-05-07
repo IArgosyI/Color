@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class MenuUI : MonoBehaviour {
-
 	// Use this for initialization
 	void Start () {
 	
@@ -16,6 +15,7 @@ public class MenuUI : MonoBehaviour {
     public void StartGame()
     {
         //Add some Animation?
+        Instantiate(Music.sfx);
         Application.LoadLevel("levelSelection");
     }
 

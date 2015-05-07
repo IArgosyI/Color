@@ -38,6 +38,7 @@ public class Levels : MonoBehaviour {
 
     public void LoadLevel(int x)
     {
+        Instantiate(Music.sfx);
         Debug.Log(x + " " + level);
         if(x<=level)Application.LoadLevel("level"+x);
     }

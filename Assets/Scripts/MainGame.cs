@@ -29,10 +29,13 @@ public class MainGame : MonoBehaviour {
     public SpriteRenderer blackScreen;
 
     public bool playing = true;
+    public bool animationDone = true;
 
     public int maxSlot;
 
-    public bool animationDone = true;
+    public AudioSource audio;
+    public AudioClip winSound;
+    public AudioClip loseSound;
 
 	// Use this for initialization
 	void Start () {
@@ -48,6 +51,8 @@ public class MainGame : MonoBehaviour {
         replayButton.SetActive(false);
         nextLevelButton.SetActive(false);
         //spawnInitialColorOrbs();
+
+        audio = GetComponent<AudioSource>();
 
         answers = new int[ANS.Length][];
         for (int i = 0; i < answers.Length; i++)
@@ -123,9 +128,14 @@ public class MainGame : MonoBehaviour {
 
     public void SubmitColors()
     {
+        Instantiate(Music.sfx);
         if (ChkColors())
         {
             winScreen.enabled = true;
+            Music.Instance.GetComponent<AudioSource>().Pause();
+            audio.clip = winSound;
+            audio.Play();
+            //winSound.Play();
             Time.timeScale = 0.0f;
             nextLevelButton.SetActive(true);
 
@@ -137,7 +147,10 @@ public class MainGame : MonoBehaviour {
         }
         else
         {
-            StartCoroutine(ReturnToWhite());
+            //StartCoroutine(ReturnToWhite());
+            Music.Instance.GetComponent<AudioSource>().Pause();
+            audio.clip = loseSound;
+            audio.Play();
             retryScreen.enabled = true;
             Time.timeScale = 0.0f;
         }
@@ -183,6 +196,7 @@ public class MainGame : MonoBehaviour {
 
     public void GoButton()
     {
+        Instantiate(Music.sfx);
         blackScreen.enabled = false;
         introScreen.enabled = false;
         doneButton.SetActive(true);
@@ -198,6 +212,8 @@ public class MainGame : MonoBehaviour {
 
     public void ReplayButton()
     {
+        Music.Instance.GetComponent<AudioSource>().Play();
+        Instantiate(Music.sfx);
         blackScreen.enabled = false;
         introScreen.enabled = false;
         retryScreen.enabled = false;
@@ -219,6 +235,7 @@ public class MainGame : MonoBehaviour {
 
     public void HomeButton()
     {
+        Instantiate(Music.sfx);
         Application.LoadLevel("levelSelection");
     }
 
@@ -233,12 +250,13 @@ public class MainGame : MonoBehaviour {
 
     public void NextLevelButton()
     {
+        Instantiate(Music.sfx);
         string s = Application.loadedLevelName;
         s = s.Substring(s.Length - 1);
         int x = int.Parse(s);
         Application.LoadLevel("level" + (x+1));
     }
-
+    /*
     public IEnumerator ReturnToWhite()
     {
         Time.timeScale = 0.1f;
@@ -263,7 +281,7 @@ public class MainGame : MonoBehaviour {
         Time.timeScale = 1f;
         Time.fixedDeltaTime = Time.timeScale * 0.02f;
     }
-
+    */
     IEnumerator AnimateAnswerSet()
     {
         while (playing)
@@ -307,7 +325,7 @@ public class MainGame : MonoBehaviour {
         {
             int r = Random.Range(0, ColorOrb.colors.Length);
             SpawnOneColorOrb(r);
-            yield return new WaitForSeconds(timeInterval);
+            yield return new WaitForSeconds(Random.Range(0.5f,2f));
         }
     }
 }

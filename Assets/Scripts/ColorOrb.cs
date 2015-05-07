@@ -69,7 +69,7 @@ public class ColorOrb : MonoBehaviour {
         //Debug.Log("?");
         if (mainGame.animationDone && mainGame.playing)
         {
-            GetComponent<AudioSource>().Play();
+            Instantiate(Music.sfx);
             mainGame.EatColorOrb(this);
         }
     }
