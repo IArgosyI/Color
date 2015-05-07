@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 21300000, guid: 41d7d2f9132476b4d927cc1a3e029b00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 522b8af690c42c442b2e79cc2469be2e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1623,7 +1623,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 993714175
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: c1be5ab0cb9097148b632ab5c2f08c34, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40f1c44feec275c4980345b13ea7612c, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: .909803927}
 --- !u!4 &1503026182
 Transform:

@@ -38,12 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background Pictures
+    uniqueID: 3904795597
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: GUI
     uniqueID: 993714175
-    locked: 0
-  - name: Background Pictures
-    uniqueID: 3904795597
     locked: 0
